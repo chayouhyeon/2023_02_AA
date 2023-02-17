@@ -1,7 +1,9 @@
 package com.KoreaIT.java.AM;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("==프로그램 시작==");
@@ -40,10 +42,9 @@ public class Main {
 
 				System.out.println(id + "번 글이 생성되었습니다");
 				lastArticleId++;
-			
+
 			} else if (command.startsWith("article detail ")) {
 
-				
 				String[] cmdBits = command.split(" ");
 
 				int id = Integer.parseInt(cmdBits[2]);
@@ -69,7 +70,34 @@ public class Main {
 				System.out.printf("날짜 : %s\n", foundArticle.regDate);
 				System.out.printf("제목 : %s\n", foundArticle.title);
 				System.out.printf("내용 : %s\n", foundArticle.body);
+				
+				
+			} else if (command.startsWith("article delete ")) {
 
+				String[] cmdBits = command.split(" ");
+
+				int id = Integer.parseInt(cmdBits[2]);
+
+				int foundIndex = -1;
+
+				for (int i = 0; i < articles.size(); i++) {
+					Article article = articles.get(i);
+					if (article.id == id) {
+						foundIndex = i;
+						break;
+					}
+				}
+
+				if (foundIndex == -1) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
+				}
+				// size() -> 3
+				// index : 0, 1, 2
+				// id : 1, 2, 3
+
+				articles.remove(foundIndex);
+				System.out.printf("%d번 글을 삭제했습니다.\n", id);
 			}
 
 			else {
@@ -80,11 +108,13 @@ public class Main {
 		sc.close();
 	}
 }
+
 class Article {
 	int id;
 	String regDate;
 	String title;
 	String body;
+
 	Article(int id, String regDate, String title, String body) {
 		this.id = id;
 		this.regDate = regDate;
