@@ -37,7 +37,8 @@ public class App {
 				break;
 			}
 
-			if (command.equals("article list")) {
+	
+			else if (command.equals("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("게시글이 없습니다");
 				} else {
@@ -68,7 +69,7 @@ public class App {
 				int id = Integer.parseInt(cmdBits[2]);
 
 				Article foundArticle = getArticleById(id);
-				
+
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					continue;
@@ -90,7 +91,6 @@ public class App {
 
 				Article foundArticle = getArticleById(id);
 
-			
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					continue;
@@ -114,8 +114,6 @@ public class App {
 
 				Article foundIndex = getArticleById(id);
 
-			
-
 				if (foundIndex == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					continue;
@@ -126,9 +124,13 @@ public class App {
 
 			}
 
+	
+				
+			
 			else {
 				System.out.println("존재하지 않는 명령어 입니다");
 			}
+
 		}
 
 		System.out.println("==프로그램 끝==");
