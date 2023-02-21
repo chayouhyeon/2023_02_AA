@@ -6,13 +6,16 @@ import java.util.Scanner;
 
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.util.Util;
+import com.KoreaIT.java.AM.dto.Member;
 
 public class App {
 
 	public static List<Article> articles;
+	public static List<Member> members;
 
 	static {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void run() {
@@ -23,6 +26,7 @@ public class App {
 		Scanner sc = new Scanner(System.in);
 
 		int lastArticleId = 3;
+		int lastMemberId = 0;
 
 		while (true) {
 			System.out.printf("명령어 ) ");
@@ -36,9 +40,35 @@ public class App {
 			if (command.equals("system exit")) {
 				break;
 			}
+			if (command.equals("member join")) {
+				int id = lastMemberId + 1;
+				String regDate = Util.getNowDateTimeStr();
+				System.out.printf("로그인 아이디 : ");
+				String loginId = sc.nextLine();
 
-	
-			else if (command.equals("article list")) {
+				String loginPw = null;
+				String loginPwConfirm = null;
+				while (true) {
+					System.out.printf("로그인 비밀번호 : ");
+					loginPw = sc.nextLine();
+					System.out.printf("로그인 비밀번호 재확인: ");
+					loginPwConfirm = sc.nextLine();
+
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("비밀번호를 다시 입력해주세요");
+						continue;
+					}
+					break;
+				}
+				System.out.printf("이름 : ");
+				String name = sc.nextLine();
+
+				Member member = new Member(id, regDate, loginId, loginPw, name);
+				members.add(member);
+
+				System.out.println(id + "번 회원이 가입되었습니다");
+				lastMemberId++;
+			} else if (command.equals("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("게시글이 없습니다");
 				} else {
@@ -51,8 +81,8 @@ public class App {
 
 			} else if (command.equals("article write")) {
 				int id = lastArticleId + 1;
-				System.out.printf("제목 : ");
 				String regDate = Util.getNowDateTimeStr();
+				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
@@ -124,9 +154,6 @@ public class App {
 
 			}
 
-	
-				
-			
 			else {
 				System.out.println("존재하지 않는 명령어 입니다");
 			}
