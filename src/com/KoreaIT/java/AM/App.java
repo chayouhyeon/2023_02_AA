@@ -2,6 +2,10 @@ package com.KoreaIT.java.AM;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.KoreaIT.java.AM.controller.articleController;
+import com.KoreaIT.java.AM.controller.MemberController;
+
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.dto.Member;
 import com.KoreaIT.java.AM.util.Util;
@@ -17,7 +21,10 @@ public class App {
 		makeTestData();
 		Scanner sc = new Scanner(System.in);
 		int lastArticleId = 3;
-		int lastMemberId = 0;
+		
+		MemberController memberController = new MemberController(members, sc);
+		articleController articleController = new articleController();
+		
 		while (true) {
 			System.out.printf("명령어 ) ");
 			String command = sc.nextLine().trim();
@@ -29,42 +36,9 @@ public class App {
 				break;
 			}
 			if (command.equals("member join")) {
-				int id = lastMemberId + 1;
-				String regDate = Util.getNowDateTimeStr();
-				String loginId = null;
+				memberController.doJoin();
 
-				while (true) {
-
-					System.out.printf("로그인 아이디 : ");
-					loginId = sc.nextLine();
-
-					if (isJoinableLoginId(loginId) == false) {
-						System.out.println("이미 사용중인 아이디입니다");
-						continue;
-					}
-
-					break;
-				}
-
-				String loginPw = null;
-				String loginPwConfirm = null;
-				while (true) {
-					System.out.printf("로그인 비밀번호 : ");
-					loginPw = sc.nextLine();
-					System.out.printf("로그인 비밀번호 재확인: ");
-					loginPwConfirm = sc.nextLine();
-					if (loginPw.equals(loginPwConfirm) == false) {
-						System.out.println("비밀번호를 다시 입력해주세요");
-						continue;
-					}
-					break;
-				}
-				System.out.printf("이름 : ");
-				String name = sc.nextLine();
-				Member member = new Member(id, regDate, loginId, loginPw, name);
-				members.add(member);
-				System.out.println(id + "번 회원이 가입되었습니다");
-				lastMemberId++;
+				
 			} else if (command.equals("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("게시글이 없습니다");
@@ -135,28 +109,7 @@ public class App {
 
 	}
 
-	private boolean isJoinableLoginId(String loginId) {
-
-		int index = getMemberIndexByLoginId(loginId);
-
-		if (index == -1) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private int getMemberIndexByLoginId(String loginId) {
-		int i = 0;
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
+	
 	private int getArticleIndexById(int id) {
 		int i = 0;
 		for (Article article : articles) {
@@ -167,10 +120,8 @@ public class App {
 		}
 		return -1;
 	}
-
 	private Article getArticleById(int id) {
 		int index = getArticleIndexById(id);
-
 		if (index != -1) {
 			return articles.get(index);
 		}
